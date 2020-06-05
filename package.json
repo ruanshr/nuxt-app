@@ -1,0 +1,51 @@
+{
+  "name": "nuxt-app",
+  "version": "1.0.0",
+  "description": "My great Nuxt.js project",
+  "author": "ruanshr",
+  "private": true,
+  "scripts": {
+    "build:ts": "tsc -w",
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "nuxt": "^2.4.0",
+    "request": "^2.88.0",
+    "vconsole": "^3.3.4",
+    "vuedraggable": "^2.23.2",
+    "element-ui": "^2.4.11"
+  },
+  "devDependencies": {
+    "@types/koa-router": "^7.4.1",
+    "@types/request": "^2.48.5",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^24.1.0",
+    "babel-eslint": "^10.0.2",
+    "jest": "^24.1.0",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.18.9",
+    "sass-loader": "^7.1.0",
+    "scss-loader": "^0.0.1",
+    "vue-jest": "^3.0.3",
+    "eslint": "4.19.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-friendly-formatter": "4.0.1",
+    "eslint-loader": "2.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-vue": "4.7.1",
+    "typescript": "^3.9.3"
+  }
+}
