@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
-const App = require('./dist/App')
+const { default: App } = require('./dist/App')
 const app = new Koa()
 
 // Import and Set Nuxt.js options
@@ -23,7 +23,7 @@ async function start () {
     const builder = new Builder(nuxt)
     await builder.build()
   }
-
+  // console.log(App)
   (new App()).ready()
 
   app.use((ctx) => {

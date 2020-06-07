@@ -1,18 +1,16 @@
-import Application from "./core/Application";
+import Application from './core/Application'
 
-import { getRegisterController } from "./controllers"
-import BaseController from "./core/BaseController";
+import { getRegisterController } from './controllers'
+import { getRegisterServices } from './services'
+import BaseController from './core/BaseController'
 
-const Ctors:Array<typeof BaseController> = getRegisterController()
-export default class App extends Application{
-  constructor(){
+export default class App extends Application {
+  constructor() {
     super()
-    this.setControllers(Ctors)
+    this.initServices(getRegisterServices())
+    this.initControllers(getRegisterController())
   }
   ready() {
     this.build()
   }
-  
 }
-
-new App().ready()
