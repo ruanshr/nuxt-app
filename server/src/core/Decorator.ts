@@ -1,7 +1,6 @@
 import BaseController, { isIHandler, TRoute } from './BaseController'
 import { IRouterContext } from 'koa-router'
 import ApiResult from './ApiResult'
-import BaseService from './BaseService'
 import Application from './Application'
 type Constructor<T = {}> = new (...args: any[]) => T
 
@@ -20,18 +19,21 @@ export function Controller(prefix: string) {
 export function Post(path: string) {
   return function(
     target: BaseController,
-    propertyKey: string,
+    propertyKey: keyof typeof target,
     propDescriptor: TypedPropertyDescriptor<
       (req: IRouterContext) => Promise<ApiResult>
     >
   ) {
     if (isIHandler(propDescriptor.value)) {
-      const route: TRoute = {
-        method: 'post',
-        path: propertyKey,
-        cb: propDescriptor.value
-      }
-      target.addRoute(route)
+      const cb = target[propertyKey]
+      if(isIHandler(cb)){
+        const route: TRoute = {
+          method: 'post',
+          path,
+          cb: cb.bind(target)
+        }
+        target.addRoute(route)
+      } 
       // target.register('post', path , propDescriptor.value.bind(target) )
     }
     const descorator: TypedPropertyDescriptor<(
@@ -60,7 +62,7 @@ export function Get(path: string) {
     if (isIHandler(propDescriptor.value)) {
       const route: TRoute = {
         method: 'get',
-        path: propertyKey,
+        path: `/${propertyKey}`,
         cb: propDescriptor.value
       }
       target.addRoute(route)

@@ -1,5 +1,4 @@
-import router, { IRouterContext } from 'koa-router'
-import Router from 'koa-router'
+import Router, { IRouterContext } from 'koa-router'
 import ApiResult from './ApiResult'
 export interface IHandler {
   (req: IRouterContext): Promise<ApiResult>
@@ -34,6 +33,7 @@ export default class BaseController {
   }
   constructor(prefix?: string) {
     this.prefix = prefix ? prefix : '/base'
+  
     this.router = new Router({ prefix: `${BASE_API_URL}${this.prefix}` })
     this.registerCustomRoute()
     this.registerRoute()
@@ -57,7 +57,7 @@ export default class BaseController {
    * @param {String} methodsName 方法名称
    */
   protected register(method: TMethod, path: string, cb: IHandler) {
-    console.log(method, path, 'request===>', this.prefix)
+    console.log(method, path, this.prefix)
     this.router[method](path, async (ctx: any, next) => {
       const req: IRouterContext = ctx.request
       const res: IRouterContext = ctx.response

@@ -11,7 +11,10 @@
             "program": "${workspaceFolder}/server/dist/app.js",
             "skipFiles": [
                 "<node_internals>/**"
-            ]
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
         },
         {
             "type": "node",
@@ -21,7 +24,9 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "showAsyncStacks": true
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
         }
     ]
 }

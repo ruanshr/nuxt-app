@@ -1,6 +1,7 @@
 import BaseController from './BaseController'
 import BaseService from './BaseService'
 export default class Application {
+  controllerInstances: BaseController[] = []
   constructor() {}
   static services: Map<string, BaseService> = new Map<string, BaseService>()
   static getService(name: string): BaseService {
@@ -12,7 +13,8 @@ export default class Application {
   }
   initControllers(controllers: Array<typeof BaseController>): Application {
     controllers.forEach((Ctor: typeof BaseController) => {
-      new Ctor()
+      const instance = new Ctor()
+      this.controllerInstances.push(instance)
     })
     return this
   }
@@ -26,13 +28,7 @@ export default class Application {
     return this
   }
 
-  registerController(): Application {
-    // this.controllers.forEach(Ctor => {
-    //   new Ctor('')
-    // })
-    return this
-  }
   build(): Application {
-    return this.registerController()
+    return this
   }
 }

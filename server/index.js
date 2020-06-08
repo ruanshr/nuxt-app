@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const consola = require('consola')
+const bodyParser = require('koa-bodyparser')
 const { Nuxt, Builder } = require('nuxt')
 const { default: App } = require('./dist/App')
 const app = new Koa()
@@ -23,8 +24,16 @@ async function start () {
     const builder = new Builder(nuxt)
     await builder.build()
   }
-  // console.log(App)
-  (new App()).ready()
+
+  app.use(bodyParser());
+  
+  const serverApp = new App().ready();
+  serverApp.controllerInstances.forEach(instance => {
+    app.use(instance.router.routes(), instance.router.allowedMethods())
+  })
+
+  // app.use(demo.router.routes(), demo.router.allowedMethods())
+  console.log('ready success')
 
   app.use((ctx) => {
     ctx.status = 200
