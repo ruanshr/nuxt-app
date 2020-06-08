@@ -19,21 +19,18 @@ export function Controller(prefix: string) {
 export function Post(path: string) {
   return function(
     target: BaseController,
-    propertyKey: keyof typeof target,
+    propertyKey: string,
     propDescriptor: TypedPropertyDescriptor<
       (req: IRouterContext) => Promise<ApiResult>
     >
   ) {
     if (isIHandler(propDescriptor.value)) {
-      const cb = target[propertyKey]
-      if(isIHandler(cb)){
-        const route: TRoute = {
-          method: 'post',
-          path,
-          cb: cb.bind(target)
-        }
-        target.addRoute(route)
-      } 
+      const route: TRoute = {
+        method: 'post',
+        path,
+        cb: propDescriptor.value.bind(target)
+      }
+      target.addRoute(route)
       // target.register('post', path , propDescriptor.value.bind(target) )
     }
     const descorator: TypedPropertyDescriptor<(
@@ -63,7 +60,7 @@ export function Get(path: string) {
       const route: TRoute = {
         method: 'get',
         path: `/${propertyKey}`,
-        cb: propDescriptor.value
+        cb: propDescriptor.value.bind(target)
       }
       target.addRoute(route)
       // target.register('post', path , propDescriptor.value.bind(target) )

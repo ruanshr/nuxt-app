@@ -8,27 +8,38 @@ import { isServiceInstance } from '../core/BaseService'
 @Controller('/user')
 class UserController extends BaseController {
   @Service
-  userService: UserService | null = null
+  userService: UserService = new UserService()
   registerCustomRoute() {
-    if (isServiceInstance(this.userService)) {
-      this.register('post', '/addCustomer', this.userService.addCustomer)
-    }
+    this.register('post', '/pageList', this.userService.pageList)
   }
-  @Post('/getCustomerInfo')
+  @Post('addUser')
+  async addUser(req: IRouterContext): Promise<ApiResult> {
+    try {
+      return this.userService.addUser(req)
+    } catch (e) {
+      console.error(e)
+    }
+    return this.buildErrorApiResult('添加客户失败')
+  }
+
+  @Get('/getUser')
   async getCustomerInfo(req: IRouterContext): Promise<ApiResult> {
-    return new ApiResult(true, '调用成功', { name: '张三' })
+    try {
+      return this.userService.getUserInfo(req)
+    } catch (e) {
+      console.error(e)
+    }
+    return this.buildErrorApiResult('获取客户信息失败')
   }
 
   @Get('/list')
   async list(req: IRouterContext): Promise<ApiResult> {
     try {
-      if (this.userService) {
-        return await this.userService.list(req)
-      }
+      return await this.userService.list(req)
     } catch (e) {
-      return this.buildErrorApiResult(e)
+      console.error(e)
     }
-    return this.buildErrorApiResult(null)
+    return this.buildErrorApiResult('获取客户列表失败')
   }
 }
 

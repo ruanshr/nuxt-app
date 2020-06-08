@@ -70,8 +70,11 @@ export default class BaseController {
       }
     })
   }
+  buildSuccessApiResult(msg: string, result: any): ApiResult{
 
-  buildErrorApiResult(e: any): ApiResult {
-    return new ApiResult(false, '接口调用失败')
+    return new ApiResult(true, msg, result)
+  }
+  buildErrorApiResult(msg: string, result?: any, code?: number): ApiResult{
+    return new ApiResult(true, msg, result, code)
   }
 }
