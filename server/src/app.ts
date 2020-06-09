@@ -1,15 +1,12 @@
-import Application from './core/Application'
-
-import { getRegisterController } from './controllers'
-import { getRegisterServices } from './services'
+import Application from './core/Application' 
 
 export default class App extends Application {
   constructor() {
     super()
-    this.initServices(getRegisterServices())
-    this.initControllers(getRegisterController())
+     
   }
-  ready(): Application {
+  async ready(): Promise<Application> {
+    await this.load()
     return this.build()
   }
 }

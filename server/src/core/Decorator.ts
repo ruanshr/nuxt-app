@@ -2,6 +2,7 @@ import BaseController, { isIHandler, TRoute } from './BaseController'
 import { IRouterContext } from 'koa-router'
 import ApiResult from './ApiResult'
 import Application from './Application'
+import Container from './Container'
 type Constructor<T = {}> = new (...args: any[]) => T
 
 export function Controller(prefix: string) {
@@ -83,7 +84,7 @@ export function Get(path: string) {
 export function Service(target: object, propertyKey: string) {
   Object.defineProperty(target, propertyKey, {
     get: () => {
-      return Application.getService(propertyKey)
+      return Container.services.get(propertyKey)
     },
     set: () => {}
   })

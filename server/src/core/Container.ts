@@ -1,11 +1,12 @@
 import fs from 'fs'
 import path from 'path'
+import BaseService from './BaseService'
+import BaseController from './BaseController'
 export default class Container {
-  controllers: any[] = []
-  services: any[] = []
+  controllers: BaseController[] = []
+  static services: Map<string, BaseService> = new Map<string, BaseService>()
   constructor() {
-    this.controllers = []
-    this.services = []
+    this.controllers = [] 
   }
 
   async load(): Promise<Container>{
@@ -14,30 +15,29 @@ export default class Container {
     return this
   }
 
-  private async getControllers(): Promise<Array<any> {
+  private async getControllers(): Promise<Array<any>> {
     const files = fs.readdirSync(path.resolve(__dirname,'../controllers'))
     return Promise.all(files.map(filename => {
         return new Promise(resolve => {
             import(`../controllers/${filename}`).then(({ default: Ctor })=>{
-                this.controllers.push(Ctor)
+                this.controllers.push(new Ctor())
                 resolve(Ctor)
             })
         })
-    })
+    }))
   }
 
   private async getServices(): Promise<Array<any>> {
     const files = fs.readdirSync(path.resolve(__dirname,'../services'))
     return Promise.all(files.map(filename => {
         return new Promise(resolve => {
-            import(`../services/${filename}`).then(({ default: Service })=>{
-                this.services.push(new Service())
+            import(`../services/${filename}`).then(({ default: Service, instance })=>{
+                filename = filename.replace('.js','')
+                const serviceName = `${filename.substr(0,1).toLowerCase()}${filename.substr(1)}`
+                Container.services.set(serviceName, instance)
                 resolve(Service)
             })
         })
-    })
+    }))
   }
 }
-
-
-new Container()

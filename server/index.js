@@ -27,8 +27,9 @@ async function start () {
 
   app.use(bodyParser());
   
-  const serverApp = new App().ready();
-  serverApp.controllerInstances.forEach(instance => {
+  const serverApp = new App();
+  await serverApp.ready()
+  serverApp.controllers.forEach(instance => {
     app.use(instance.router.routes(), instance.router.allowedMethods())
   })
 

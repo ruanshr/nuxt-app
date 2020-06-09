@@ -24,3 +24,6 @@ export default class UserService extends BaseService {
     })
   }
 }
+
+
+export const instance = new UserService
