@@ -70,11 +70,10 @@ export default class BaseController {
       }
     })
   }
-  buildSuccessApiResult(msg: string, result: any): ApiResult{
 
-    return new ApiResult(true, msg, result)
-  }
-  buildErrorApiResult(msg: string, result?: any, code?: number): ApiResult{
-    return new ApiResult(true, msg, result, code)
+
+  
+  buildApiResult(success: boolean, msg: string, result?: any, code?: number): ApiResult{
+    return new ApiResult(success, msg, result, code)
   }
 }

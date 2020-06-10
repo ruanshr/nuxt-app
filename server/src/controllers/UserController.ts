@@ -2,13 +2,12 @@ import BaseController from '../core/BaseController'
 import { Controller, Service, Post, Get } from '../core/Decorator'
 import { IRouterContext } from 'koa-router'
 import ApiResult from '../core/ApiResult'
-import UserService from '../Services/UserService'
-import { isServiceInstance } from '../core/BaseService'
+import UserService, { instance } from '../Services/UserService'
 
 @Controller('/user')
 class UserController extends BaseController {
   @Service
-  userService: UserService = new UserService()
+  userService: UserService = instance
   registerCustomRoute() {
     this.register('post', '/pageList', this.userService.pageList)
   }
@@ -19,7 +18,7 @@ class UserController extends BaseController {
     } catch (e) {
       console.error(e)
     }
-    return this.buildErrorApiResult('添加客户失败')
+    return this.buildApiResult(false,'添加客户失败')
   }
 
   @Get('/getUser')
@@ -29,7 +28,7 @@ class UserController extends BaseController {
     } catch (e) {
       console.error(e)
     }
-    return this.buildErrorApiResult('获取客户信息失败')
+    return this.buildApiResult(false, '获取客户信息失败')
   }
 
   @Get('/list')
@@ -39,7 +38,7 @@ class UserController extends BaseController {
     } catch (e) {
       console.error(e)
     }
-    return this.buildErrorApiResult('获取客户列表失败')
+    return this.buildApiResult(false, '获取客户列表失败')
   }
 }
 
